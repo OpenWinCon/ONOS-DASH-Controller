@@ -17,10 +17,10 @@
 
     <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
         <command>
-            <action class="org.foo.app.AppCommand"/>
+            <action class="kr.ac.postech.app.AppCommand"/>
         </command>
         <command>
-            <action class="org.foo.app.AppCommand2"/>
+            <action class="kr.ac.postech.app.AppCommand2"/>
         </command>
     </command-bundle>
 

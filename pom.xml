@@ -16,22 +16,22 @@
   --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.foo</groupId>
-    <artifactId>foo-app</artifactId>
+    <groupId>kr.ac.postech</groupId>
+    <artifactId>dash-ctl</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <description>ONOS OSGi bundle archetype</description>
-    <url>http://onosproject.org</url>
+    <url>http://mcnl.postech.ac.kr</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <onos.version>1.7.0-SNAPSHOT</onos.version>
-        <onos.app.name>org.foo.app</onos.app.name>
-        <onos.app.title>Foo App</onos.app.title>
-        <onos.app.origin>Foo, Inc.</onos.app.origin>
+        <onos.app.name>kr.ac.postech.app</onos.app.name>
+        <onos.app.title>DASH Controller</onos.app.title>
+        <onos.app.origin>MCNL</onos.app.origin>
         <onos.app.category>default</onos.app.category>
-        <onos.app.url>http://onosproject.org</onos.app.url>
+        <onos.app.url>http://mcnl.postech.ac.kr</onos.app.url>
         <onos.app.readme>ONOS OSGi bundle archetype.</onos.app.readme>
         
     </properties>
