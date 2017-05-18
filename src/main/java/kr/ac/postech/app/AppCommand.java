@@ -20,22 +20,20 @@ import kr.ac.postech.app.*;
 import kr.ac.postech.app.ArimaRcv;
 import kr.ac.postech.app.BufferInfoRcv;
 import org.onosproject.cli.AbstractShellCommand;
-
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Sample Apache Karaf CLI command
+ * Karaf CLI command
  */
-@Command(scope = "onos", name = "bw",
+@Command(scope = "onos", name = "dash-ctl-start",
         description = "Sample Apache Karaf CLI command")
 
 public class AppCommand extends AbstractShellCommand {
 
     private AppComponent service;
     private kr.ac.postech.app.BufferInfoRcv bufferInfo = new BufferInfoRcv();
-    private kr.ac.postech.app.WBestInfoRcv wirelessBW = new WBestInfoRcv();
+    private kr.ac.postech.app.DownloadTimeInfoRcv dtinfo = new DownloadTimeInfoRcv();
     private ArimaRcv arimaRcv = new ArimaRcv();
     @Override
     protected void execute() {
@@ -44,24 +42,32 @@ public class AppCommand extends AbstractShellCommand {
         Timer timer = new Timer();
         MeasureTraffic mt = new MeasureTraffic();
         SendMsg sm = new SendMsg();
+        PrintLog pl = new PrintLog();
 
 
-        timer.scheduleAtFixedRate(mt, 1000, 1000);
-        timer.scheduleAtFixedRate(sm, 1000, 1000);
+
+        service.preSync();
+        timer.scheduleAtFixedRate(mt, 1000, 2000);
+        timer.scheduleAtFixedRate(sm, 1000, 2000);
+        timer.scheduleAtFixedRate(pl, 1000, 1000);
 
         bufferInfo.start();
+        dtinfo.start();
         arimaRcv.start();
-        wirelessBW.start();
     }
 
 
+    class PrintLog extends TimerTask {
+        public void run(){
+            service.log();
+        }
+    }
 
     class MeasureTraffic extends TimerTask {
         public void run(){
                 service.measureTraffic();
         }
     }
-
 
     class SendMsg extends TimerTask {
         public void run(){

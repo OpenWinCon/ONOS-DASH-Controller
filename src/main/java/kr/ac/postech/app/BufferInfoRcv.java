@@ -9,22 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-/**
- * Created by hwan on 7/22/16.
- */
 
 public class BufferInfoRcv implements Runnable{
-    ServerSocket serverSocket;
+    ServerSocket serverSocket = null;
     Thread thread;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     static HashMap<String, Integer> currentBufferLength = new HashMap<>();
-
+    static HashMap<String, Integer> currentSegNumber = new HashMap<>();
     public BufferInfoRcv(){
         try{
-            serverSocket = new ServerSocket(8800);
+            serverSocket = new ServerSocket(9900);
         } catch (IOException e){
-            ;
+            e.printStackTrace();
         }
     }
     public void start(){
@@ -39,24 +36,23 @@ public class BufferInfoRcv implements Runnable{
                 InputStream in = socket.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 String msg = br.readLine();
-
+                String[] recievedInfo;
                 Date dt = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, hh:mm:ss a");
-                System.out.println("[" + sdf.format(dt).toString() + "]" + " " +msg);
+             //   System.out.println("[" + sdf.format(dt).toString() + "]" + " " +msg);
 
                 if(msg != null){
-                    int dotIndex = 0;
-                    int valueSize = 0;
-                    int value;
 
                     if(msg.contains(".")){
-                        dotIndex = msg.indexOf('.');
-                        valueSize = msg.substring(dotIndex+1).length() - 1;
+                        int bl, sn;
+                        recievedInfo = msg.split("\\.");
+                        if(recievedInfo.length > 2){
+                            bl = Integer.parseInt(recievedInfo[1]);
+                            sn = Integer.parseInt(recievedInfo[2]);
+                            currentBufferLength.put(recievedInfo[0], bl);
+                            currentSegNumber.put(recievedInfo[0], sn);
+                        }
 
-                        value = Integer.parseInt(msg.substring(dotIndex+1, dotIndex+valueSize+1));
-
-                        if(value >= 0)
-                            currentBufferLength.put(msg.substring(0, dotIndex), value);
                     }
                 }
                 //System.out.println(msg);
@@ -68,13 +64,14 @@ public class BufferInfoRcv implements Runnable{
     }
 
     public static void printCurrentBufferLengthMap(){
+        System.out.println("[ Buffer length of clients ] ");
         Set<Map.Entry<String, Integer>> set = currentBufferLength.entrySet();
         Iterator<Map.Entry<String, Integer>> it = set.iterator();
 
         while (it.hasNext())
         {
             Map.Entry<String, Integer> e = (Map.Entry<String, Integer>)it.next();
-            System.out.println("dev:" + e.getKey() +", buffer length:" + e.getValue() + "sec");
+            System.out.println("Client:" + e.getKey() +", Buffer length:" + e.getValue() + "sec" +", Seg #:" + currentSegNumber.get(e.getKey()));
         }
     }
 }

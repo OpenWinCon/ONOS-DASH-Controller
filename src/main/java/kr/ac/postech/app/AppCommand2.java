@@ -16,29 +16,35 @@
 package kr.ac.postech.app;
 
 import org.apache.karaf.shell.commands.Command;
-import kr.ac.postech.app.*;
-import kr.ac.postech.app.ArimaRcv;
 import org.onosproject.cli.AbstractShellCommand;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
- * Sample Apache Karaf CLI command
+ * Command : dash-ctl-print
  */
-@Command(scope = "onos", name = "print",
+@Command(scope = "onos", name = "dash-ctl-print",
         description = "Sample Apache Karaf CLI command")
 
 public class AppCommand2 extends AbstractShellCommand {
-
     private AppComponent service;
     @Override
     protected void execute() {
         service = get(AppComponent.class);
+        //Print following information
+        Date dt = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("[yyyy-MM-dd hh:mm:ss a]");
+        System.out.println("==============" + sdf.format(dt).toString() + "==============");
         service.printCurrentThroughputMap();
+        System.out.println("");
         ArimaRcv.printEstimatedThroughputMap();
+        System.out.println("");
         BufferInfoRcv.printCurrentBufferLengthMap();
-        WBestInfoRcv.printCurrentWirelessBWMap();
+        System.out.println("");
+        service.printSolutionMap();
+        System.out.println("====================================================");
     }
 }
 
